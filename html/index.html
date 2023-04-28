@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Compuestos</title>
+
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet"/>
+
+</head>
+<body>
+
+<script src="https://unpkg.com/@rdkit/rdkit/dist/RDKit_minimal.js"></script>
+<script>
+
+    function updateCompoundGraphics(){
+
+        var smiles = $(".compound");
+        smiles.each((i,s) => {
+            var mol = RDKitModule.get_mol(s.innerHTML);
+            //var dest = document.getElementById("compuestoCustomOutput");
+            var svg = mol.get_svg();
+            s.innerHTML =  svg ;
+
+        })
+
+    }
+
+    onRuntimeInitialized: initRDKitModule().then(function (instance) {
+        RDKitModule = instance;
+        console.log('version: ' + RDKitModule.version());
+
+        updateCompoundGraphics()
+
+
+    });
+</script>
+
+
+<div class="container">
+    <div class="row">
+        <div class="col">
+
+            <div class="input-group">
+                <select class="form-select" id="inputGroupSelect04" aria-label="Download options">
+                    <<option value="1">All</option>
+                    <option value="2">Zinc</option>
+                    <option value="3">Direct (Seed III / IV)</option>
+                    <option value="3">Direct (Seed I / II)</option>
+                </select>
+                <button class="btn btn-outline-secondary" type="button">Download</button>
+            </div>
+
+            <table class="table">
+                <thead>
+                <tr>
+                    <th colspan="3" scope="col">Source</th>
+                    <th colspan="3" scope="col">Extended</th>
+                    <th colspan="2" scope="col">Other targets with</th>
+                </tr>
+                <tr>
+                    <th scope="col">ID</th>
+                    <th scope="col">2D</th>
+                    <th scope="col">Source</th>
+
+                    <th scope="col">PFAM</th>
+                    <th scope="col">Cluster</th>
+                    <th scope="col">Zinc</th>
+                    <th scope="col">Ligand</th>
+                    <th scope="col">Cluster</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td><a href="https://www.rcsb.org/ligand/AGS">AGS</a></td>
+                    <td class="compound">c1nc(c2c(n1)n(cn2)[C@H]3[C@@H]([C@@H]([C@H](O3)COP(=O)(O)OP(=O)(O)OP(=S)(O)O)O)O)N</td>
+                    <td>PDB</td>
+                    <td></td>
+                    <td>AN2</td>
+                    <td><button type="button" class="btn btn-link" data-bs-toggle="modal"
+                                data-bs-target="#exampleModalFullscreen">4</button> </td>
+                    <td><button type="button" class="btn btn-link" onclick="alert('va a lista de targets qeu tienen el ligando semilla')" >10</button></td>
+                    <td><button type="button" class="btn btn-link" onclick="alert('va a lista de targets qeu tienen el ligando semilla o extendido')" >20</button></td>
+                </tr>
+
+                <tr>
+                    <td><a href="https://www.ebi.ac.uk/chembl/compound_report_card/CHEMBL3329317/">CHEMBL3329317</a></td>
+                    <td class="compound">CCNC(=O)Nc1cc(Nc2ccc(O)cc2)c(C(=O)Nc2cccnc2)cn1</td>
+                    <td>ChEMBL</td>
+                    <td></td>
+                    <td>D0K</td>
+                    <td><button type="button" class="btn btn-link" data-bs-toggle="modal"
+                                data-bs-target="#exampleModalFullscreen">14</button> </td>
+                    <td>0</td>
+                    <td><button type="button" class="btn btn-link" onclick="alert('va a lista de targets qeu tienen el ligando semilla o extendido')" >3</button></td>
+                </tr>
+
+                <tr>
+                    <td><a href="https://www.rcsb.org/ligand/HX4">HX4</a></td>
+                    <td class="compound">c1ccc(cc1)c2cc(n[nH]2)N</td>
+                    <td>PDB</td>
+                    <td>PF00269</td>
+                    <td>HX4</td>
+                    <td><button type="button" class="btn btn-link" data-bs-toggle="modal"
+                                data-bs-target="#exampleModalFullscreen">14</button> </td>
+                    <td>0</td>
+                    <td><button type="button" class="btn btn-link" onclick="alert('va a lista de targets qeu tienen el ligando semilla o extendido')" >3</button></td>
+                </tr>
+                <tr>
+                    <td><a href="https://www.ebi.ac.uk/chembl/compound_report_card/CHEMBL3736321/">CHEMBL3736321</a></td>
+                    <td class="compound">CCNC(=O)Nc1cn(-c2ncc(Br)cn2)c2cc(-c3ccn(CCO)c(=O)c3)cnc12</td>
+                    <td>ChEMBL</td>
+                    <td>PF30239</td>
+                    <td>CHEMBL3735435</td>
+                    <td>0</td>
+                    <td>0</td>
+                    <td>6</td>
+                </tr>
+
+
+                </tbody>
+            </table>
+
+
+        </div>
+
+</div>
+
+    <div class="modal fade" id="exampleModalFullscreen" tabindex="-1" aria-labelledby="exampleModalFullscreenLabel" aria-hidden="true" style="display: none;">
+        <div class="modal-dialog modal-fullscreen">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title h4" id="exampleModalFullscreenLabel">Zinc compound List</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <table class="table">
+                        <tr>
+                            <td>ZINC000100006548</td>
+                            <td class="compound"> CO[C@@H]1/C=C\\C=C(\\C)C(=O)NC2=CC(=O)C(NCCN(C)C)=C(C[C@H](C)C[C@@H](OC)[C@H](O)[C@H](C)/C=C(/C)[C@H]1OC(N)=O)C2=O</td>
+                            <td>CO[C@@H]1/C=C\\C=C(\\C)C(=O)NC2=CC(=O)C(NCCN(C)C)=C(C[C@H](C)C[C@@H](OC)[C@H](O)[C@H](C)/C=C(/C)[C@H]1OC(N)=O)C2=O</td>
+                        </tr>
+                        <tr>
+                            <td>ZINC000254096115</td>
+                            <td class="compound"> CO[C@H]1C[C@@H](C)CC2=C(NCCN(C)C)C(=O)C=C(NC(=O)C(C)=CC=C[C@@H](OC)[C@@H](OC(N)=O)C(C)=C[C@@H](C)[C@H]1O)C2=O</td>
+                            <td>CO[C@H]1C[C@@H](C)CC2=C(NCCN(C)C)C(=O)C=C(NC(=O)C(C)=CC=C[C@@H](OC)[C@@H](OC(N)=O)C(C)=C[C@@H](C)[C@H]1O)C2=O</td>
+                        </tr>
+                        <tr>
+                            <td>ZINC000725326409</td>
+                            <td class="compound">CO[C@H]1/C=C\\C=C(/C)C(=O)NC2=CC(=O)C(NCCC(C)C)=C(C[C@@H](C)C[C@H](OC)[C@@H](O)[C@@H](C)/C=C(\\C)[C@@H]1OC(=N)O)C2=O </td>
+                            <td>CO[C@H]1/C=C\\C=C(/C)C(=O)NC2=CC(=O)C(NCCC(C)C)=C(C[C@@H](C)C[C@H](OC)[C@@H](O)[C@@H](C)/C=C(\\C)[C@@H]1OC(=N)O)C2=O</td>
+                        </tr>
+                    </table>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+<script src="https://code.jquery.com/jquery-3.6.3.min.js"
+        integrity="sha256-pvPw+upLPUjgMXY0G+8O0xUf+/Im1MZjXxxgOcBQBXU=" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN"
+        crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+
+</body>
+</html>
